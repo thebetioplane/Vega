@@ -41,6 +41,7 @@ namespace Vega.GameModeMenu
                     break;
                 case ActionKey.MenuEnter:
                 case ActionKey.MenuEnterEx:
+                case ActionKey.A:
                     Assets.MenuHit.Play();
                     this.MenuSelect();
                     break;

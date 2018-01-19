@@ -25,7 +25,6 @@ namespace Vega.GameModeMenu
             switch (this.Selected)
             {
                 case 0:
-                    throw new NotImplementedException("lol");
                     Main.Self.SwitchGamemode(GameModeType.Select);
                     break;
                 case 1:

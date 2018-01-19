@@ -82,6 +82,7 @@
     <Compile Include="GameModeMenu\GameModeMenuAbstract.cs" />
     <Compile Include="GameModeMenu\GameModeOption.cs" />
     <Compile Include="GameModeMenu\GameModeSelect.cs" />
+    <Compile Include="Gamepader.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Main.cs" />

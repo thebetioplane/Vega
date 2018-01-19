@@ -7,7 +7,7 @@ using Color4 = OpenTK.Graphics.Color4;
 
 namespace Vega
 {
-    public enum ActionKey : int { MenuEnter = 0, MenuEnterEx, MenuUp, MenuDown }
+    public enum ActionKey : int { MenuEnter = 0, MenuEnterEx, MenuUp, MenuDown, A, B, X, Y }
 
     public class Main : GameWindow
     {
@@ -27,7 +27,6 @@ namespace Vega
             this.Rng = new Random();
             this.VSync = VSyncMode.Adaptive;
             this.Location = new Point(30, 30);
-            this.CurrentKeyboardState = Keyboard.GetState();
             this.BannerText = string.Empty;
             if (! Program.NoNetwork)
             {
@@ -143,27 +142,73 @@ namespace Vega
             this.Keybinds[(int)ActionKey.MenuEnterEx] = Key.KeypadEnter;
             this.Keybinds[(int)ActionKey.MenuUp] = Key.Up;
             this.Keybinds[(int)ActionKey.MenuDown] = Key.Down;
+            this.Keybinds[(int)ActionKey.A] = Key.A;
+            this.Keybinds[(int)ActionKey.B] = Key.B;
+            this.Keybinds[(int)ActionKey.X] = Key.X;
+            this.Keybinds[(int)ActionKey.Y] = Key.Y;
+            Gamepader.Primary.MenuUp += (sender, sig) =>
+            {
+                if (sig)
+                    this.OnKeyDown(ActionKey.MenuUp);
+            };
+            Gamepader.Primary.MenuDown += (sender, sig) =>
+            {
+                if (sig)
+                    this.OnKeyDown(ActionKey.MenuDown);
+            };
+            Gamepader.Primary.ButtonA += (sender, sig) =>
+            {
+                if (sig)
+                    this.OnKeyDown(ActionKey.A);
+                else
+                    this.OnKeyUp(ActionKey.A);
+            };
+            Gamepader.Primary.ButtonB += (sender, sig) =>
+            {
+                if (sig)
+                    this.OnKeyDown(ActionKey.B);
+                else
+                    this.OnKeyUp(ActionKey.B);
+            };
+            Gamepader.Primary.ButtonX += (sender, sig) =>
+            {
+                if (sig)
+                    this.OnKeyDown(ActionKey.X);
+                else
+                    this.OnKeyUp(ActionKey.X);
+            };
+            Gamepader.Primary.ButtonY += (sender, sig) =>
+            {
+                if (sig)
+                    this.OnKeyDown(ActionKey.Y);
+                else
+                    this.OnKeyUp(ActionKey.Y);
+            };
         }
 
         private Key[] Keybinds = new Key[Enum.GetNames(typeof(ActionKey)).Length];
-        public KeyboardState CurrentKeyboardState { get; private set; }
-        private KeyboardState LastKeyboardState;
-
+        private bool[] AKDown = new bool[Enum.GetNames(typeof(ActionKey)).Length];
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
             this.TotalFrameCount++;
-            this.LastKeyboardState = this.CurrentKeyboardState;
-            this.CurrentKeyboardState = Keyboard.GetState();
+            var keyboardState = Keyboard.GetState();
             for (int i = 0; i < this.Keybinds.Length; i++)
             {
                 Key key = this.Keybinds[i];
                 ActionKey ak = (ActionKey)i;
-                if (this.CurrentKeyboardState.IsKeyDown(key) && !this.LastKeyboardState.IsKeyDown(key))
+                if (keyboardState.IsKeyDown(key) && ! this.AKDown[i])
+                {
                     this.OnKeyDown(ak);
-                else if (this.LastKeyboardState.IsKeyDown(key) && !this.CurrentKeyboardState.IsKeyDown(key))
+                    this.AKDown[i] = true;
+                }
+                else if (this.AKDown[i] && ! keyboardState.IsKeyDown(key))
+                {
                     this.OnKeyUp(ak);
+                    this.AKDown[i] = false;
+                }
             }
+            Gamepader.Primary.Update();
             this.CurrentGamemode.Update();
         }
 
