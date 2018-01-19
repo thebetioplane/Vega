@@ -8,6 +8,7 @@ namespace Vega.GameModeMenu
     {
         private int N = 0;
         private float C = 0;
+        public float BPM = 60.0f;
 
         public GameModeMenu()
             : base()
@@ -40,7 +41,7 @@ namespace Vega.GameModeMenu
         {
             base.Update();
             this.N++;
-            this.C = ((float)Math.Sin(this.N / 10.0f) + 1.0f) / 4.0f + 0.5f;
+            this.C = (float)Math.Sin(MathHelper.Pi * this.BPM * this.N / 3600.0f) / 3.0f + 0.6666f;
         }
 
         public override void Draw()

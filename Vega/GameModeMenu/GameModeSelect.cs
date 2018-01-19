@@ -7,7 +7,7 @@ namespace Vega.GameModeMenu
         public GameModeSelect()
             : base()
         {
-            this.MakeButtons(25.0f, 5.0f, 25.0f, "Play from beginning", "Stage select", "Back");
+            this.MakeButtons(25.0f, 5.0f, 25.0f, "Play", "Play", "Back");
         }
 
         protected override void MenuSelect()
