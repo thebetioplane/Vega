@@ -10,7 +10,7 @@ namespace Vega
     {
         //public const string BUILD_ID = "20180108";
         public static bool NoNetwork = false;
-        public static string[] RequiredFiles = { "Vega.exe", "OpenTK.dll", "ManagedBass.dll", "VegaImg.dat", "VegaSnd.dat" };
+        public static string[] RequiredFiles = { "Vega.exe", "OpenTK.dll", "bass.dll", "ManagedBass.dll", "VegaImg.dat", "VegaSnd.dat" };
         [STAThread]
         public static void Main(string[] args)
         {
@@ -78,13 +78,14 @@ namespace Vega
             }
             try
             {
-                EntryPoint();
-            }
-            catch (System.IO.FileNotFoundException e)
-            {
-                Logger.DefaultLogger.WriteLine("File not found exception, assuming missing asset");
-                Logger.DefaultLogger.WriteError(e);
-                DoUpdateRetryDialog("Missing Asset", string.Format("Vega could not find the file `{0}`, possibly do to a failed update.\n\nPress OK to force an update.", e.FileName));
+                try
+                {
+                    EntryPoint();
+                }
+                catch (TypeInitializationException e)
+                {
+                    throw e.InnerException;
+                }
             }
             catch (DllNotFoundException e)
             {

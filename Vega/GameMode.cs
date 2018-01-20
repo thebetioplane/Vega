@@ -42,7 +42,7 @@ namespace Vega
                 case GameModeType.Select:
                     return new GameModeMenu.GameModeSelect();
                 case GameModeType.Play:
-                    throw new ArgumentException("NO SUCH GAMEMODE");
+                    throw new InvalidOperationException("GameModePlay cannot be constructed by type. Needs track as argument.");
                 default:
                     throw new ArgumentException("No such gamemode");
             }

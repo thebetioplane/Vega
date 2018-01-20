@@ -82,6 +82,7 @@
     <Compile Include="GameModeMenu\GameModeMenuAbstract.cs" />
     <Compile Include="GameModeMenu\GameModeOption.cs" />
     <Compile Include="GameModeMenu\GameModeSelect.cs" />
+    <Compile Include="GameModePlay\GameModePlay.cs" />
     <Compile Include="Gamepader.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Logger.cs" />
@@ -95,9 +96,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SlideValue.cs" />
     <Compile Include="SoundEffect.cs" />
     <Compile Include="Texture2D.cs" />
+    <Compile Include="TimingPoint.cs" />
+    <Compile Include="Track.cs" />
+    <Compile Include="TrackList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

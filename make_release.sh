@@ -1,6 +1,6 @@
 #!/bin/bash
 
-msbuild '-p:configuration=release;DebugSymbols=false;pdbaltpath=%_PDB%' -nologo
+msbuild '-p:configuration=release;DebugSymbols=false' -nologo
 rm -rf distro
 mkdir distro
 cp ./Vega/bin/Release/*.* ./distro

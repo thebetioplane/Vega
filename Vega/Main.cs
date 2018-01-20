@@ -16,6 +16,7 @@ namespace Vega
         public ConfigFile Config { get; private set; }
         public int TotalFrameCount { get; private set; }
         public string BannerText { get; private set; }
+        public TrackList TrackList { get; private set; }
         private GameMode[] LoadedGameMode = new GameMode[Enum.GetNames(typeof(GameModeType)).Length];
 
         public GameMode CurrentGamemode { get; private set; }
@@ -73,6 +74,9 @@ namespace Vega
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            this.TrackList = new TrackList();
+            if (this.TrackList.Count != 0)
+                this.TrackList.GetRandom().Play();
             Logger.DefaultLogger.WriteLine("OpenGL Version  : {0}", GL.GetString(StringName.Version));
             Logger.DefaultLogger.WriteLine("Shader Version  : {0}", GL.GetString(StringName.ShadingLanguageVersion));
             Logger.DefaultLogger.WriteLine("OpenGL Renderer : {0}", GL.GetString(StringName.Renderer));
@@ -85,8 +89,7 @@ namespace Vega
             this.SetKeybinds();
             Assets.LoadContent();
 #if DEBUG
-            //this.SwitchGamemode(GameModeType.Play);
-            this.SwitchGamemode(GameModeType.Menu);
+            this.SwitchGamemode(GameModeType.Play, new GameModePlay.GameModePlay(this.TrackList[0]));
 #else
             this.SwitchGamemode(GameModeType.Menu);
 #endif
@@ -100,7 +103,7 @@ namespace Vega
             byte index = (byte)type;
             if (obj != null)
             {
-                Logger.DefaultLogger.WriteLine("Gamemode : {0} ([1}])", type, obj.GetType());
+                Logger.DefaultLogger.WriteLine("Gamemode : {0} ({1})", type, obj.GetType());
                 this.LoadedGameMode[index] = obj;
             }
             else if (this.LoadedGameMode[index] == null)

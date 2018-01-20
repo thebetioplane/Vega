@@ -15,7 +15,15 @@ namespace Vega.GameModeMenu
             switch (this.Selected)
             {
                 case 0:
-                    Main.Self.SwitchGamemode(GameModeType.Play);
+                    if (Main.Self.TrackList.Count == 0)
+                    {
+                        this.SetText("You have no songs");
+                    }
+                    else
+                    {
+                        Main.Self.SwitchGamemode(GameModeType.Play,
+                            new GameModePlay.GameModePlay(Main.Self.TrackList[0]));
+                    }
                     break;
                 case 1:
                     this.SetText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));

@@ -6,9 +6,9 @@ namespace Vega.GameModeMenu
 {
     public class GameModeMenu : GameModeMenuAbstract
     {
-        private int N = 0;
+        private int T = 0;
         private float C = 0;
-        public float BPM = 60.0f;
+        public float Bpm = 60.0f;
 
         public GameModeMenu()
             : base()
@@ -19,6 +19,12 @@ namespace Vega.GameModeMenu
         public override void OnSwitch()
         {
             base.OnSwitch();
+        }
+
+        public void UseTiming(TimingPoint tp)
+        {
+            this.Bpm = tp.BPM;
+            this.T = (int)(tp.Offset / 60);
         }
 
         protected override void MenuSelect()
@@ -40,8 +46,8 @@ namespace Vega.GameModeMenu
         public override void Update()
         {
             base.Update();
-            this.N++;
-            this.C = (float)Math.Sin(MathHelper.Pi * this.BPM * this.N / 3600.0f) / 3.0f + 0.6666f;
+            this.C = (float)Math.Cos(MathHelper.Pi * this.Bpm * this.T / 3600.0f) / 3.0f + 0.6666f;
+            ++this.T;
         }
 
         public override void Draw()
