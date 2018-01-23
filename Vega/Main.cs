@@ -74,9 +74,6 @@ namespace Vega
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.TrackList = new TrackList();
-            if (this.TrackList.Count != 0)
-                this.TrackList.GetRandom().Play();
             Logger.DefaultLogger.WriteLine("OpenGL Version  : {0}", GL.GetString(StringName.Version));
             Logger.DefaultLogger.WriteLine("Shader Version  : {0}", GL.GetString(StringName.ShadingLanguageVersion));
             Logger.DefaultLogger.WriteLine("OpenGL Renderer : {0}", GL.GetString(StringName.Renderer));
@@ -85,13 +82,16 @@ namespace Vega
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
+            this.TrackList = new TrackList();
             this.Config = new ConfigFile();
             this.SetKeybinds();
             Assets.LoadContent();
 #if DEBUG
-            this.SwitchGamemode(GameModeType.Play, new GameModePlay.GameModePlay(this.TrackList[0]));
+            this.SwitchGamemode(GameModeType.Play, new GameModePlay.GameModePlay(this.TrackList[0].GetLevel(0)));
 #else
             this.SwitchGamemode(GameModeType.Menu);
+            if (this.TrackList.Count != 0)
+                this.TrackList.GetRandom().Play();
 #endif
         }
 

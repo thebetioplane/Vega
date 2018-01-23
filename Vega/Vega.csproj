@@ -82,7 +82,9 @@
     <Compile Include="GameModeMenu\GameModeMenuAbstract.cs" />
     <Compile Include="GameModeMenu\GameModeOption.cs" />
     <Compile Include="GameModeMenu\GameModeSelect.cs" />
+    <Compile Include="GameModePlay\Beat.cs" />
     <Compile Include="GameModePlay\GameModePlay.cs" />
+    <Compile Include="GameModePlay\Level.cs" />
     <Compile Include="Gamepader.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Logger.cs" />
@@ -100,6 +102,7 @@
     <Compile Include="Texture2D.cs" />
     <Compile Include="TimingPoint.cs" />
     <Compile Include="Track.cs" />
+    <Compile Include="TrackEvent.cs" />
     <Compile Include="TrackList.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,8 +4,14 @@ namespace Vega.GameModePlay
 {
     public class GameModePlay : GameMode
     {
-        public GameModePlay(Track track)
+        public GameModePlay(Level level)
         {
+            
+        }
+
+        public override void Update()
+        {
+            
         }
     }
 }

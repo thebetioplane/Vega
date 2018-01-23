@@ -7,24 +7,22 @@ namespace Vega.GameModeMenu
     public class GameModeMenu : GameModeMenuAbstract
     {
         private int T = 0;
-        private float C = 0;
-        public float Bpm = 60.0f;
-
+        private float C = 0.2f;
+        private TrackEvent TrackEvent;
         public GameModeMenu()
             : base()
         {
             this.MakeButtons(25.0f, 200.0f, 25.0f, "Play", "Options", "Exit");
+            this.TrackEvent = new TrackEvent();
+            this.TrackEvent.Drum += (sender, downbeat) =>
+            {
+                this.C = 1.0f;
+            };
         }
 
         public override void OnSwitch()
         {
             base.OnSwitch();
-        }
-
-        public void UseTiming(TimingPoint tp)
-        {
-            this.Bpm = tp.BPM;
-            this.T = (int)(tp.Offset / 60);
         }
 
         protected override void MenuSelect()
@@ -45,8 +43,15 @@ namespace Vega.GameModeMenu
 
         public override void Update()
         {
+            if (this.TrackEvent.Track == null || this.TrackEvent.Track != Track.GetSPCurrentTrack())
+            {
+                this.TrackEvent.Track = Track.GetSPCurrentTrack();
+            }
+            this.TrackEvent.Poll();
             base.Update();
-            this.C = (float)Math.Cos(MathHelper.Pi * this.Bpm * this.T / 3600.0f) / 3.0f + 0.6666f;
+            if (this.C > 0.2)
+                this.C -= 0.05f;
+            //this.C = (float)Math.Cos(MathHelper.Pi * this.Bpm * this.T / 3600.0f) / 3.0f + 0.6666f;
             ++this.T;
         }
 

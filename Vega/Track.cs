@@ -49,11 +49,20 @@ namespace Vega
             }
             this.Timing.Sort();
         }
+        public GameModePlay.Level GetLevel(int n)
+        {
+            return new GameModePlay.Level(this);
+        }
         private static int SPStream;
         private static SongPlayerStatus SPStatus;
         public static SongPlayerStatus GetSPStatus()
         {
             return SPStatus;
+        }
+        private static Track SPCurrentTrack = null;
+        public static Track GetSPCurrentTrack()
+        {
+            return SPCurrentTrack;
         }
         static Track()
         {
@@ -74,6 +83,7 @@ namespace Vega
             SPStream = Bass.CreateStream(this.SongFullPath);
             if (SPStream == 0)
                 throw new Exception("bass.dll could not create stream");
+            SPCurrentTrack = this;
         }
         public void Unload()
         {
@@ -101,9 +111,9 @@ namespace Vega
             Bass.ChannelPause(SPStream);
             SPStatus = SongPlayerStatus.Paused;
         }
-        private long GetMS()
+        public double GetSeconds()
         {
-            return (long)(Bass.ChannelBytes2Seconds(SPStream, Bass.ChannelGetPosition(SPStream)) * 1000.0);
+            return Bass.ChannelBytes2Seconds(SPStream, Bass.ChannelGetPosition(SPStream));
         }
     }
 }

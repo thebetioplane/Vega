@@ -22,7 +22,7 @@ namespace Vega.GameModeMenu
                     else
                     {
                         Main.Self.SwitchGamemode(GameModeType.Play,
-                            new GameModePlay.GameModePlay(Main.Self.TrackList[0]));
+                            new GameModePlay.GameModePlay(Main.Self.TrackList[0].GetLevel(0)));
                     }
                     break;
                 case 1:
