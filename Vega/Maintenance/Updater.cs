@@ -84,7 +84,7 @@ namespace Vega.Maintenance
                         this.TextChanged(this, status);
                     var dlFile = Path.Combine(TMP_DIR, file + ".dl");
                     var trFile = Path.Combine(TMP_DIR, file + ".trash");
-                    this.Client.DownloadFile(this.GetWebUrl("Vega.exe"), dlFile);
+                    this.Client.DownloadFile(this.GetWebUrl(file), dlFile);
                     if (File.Exists(file))
                         File.Move(file, trFile);
                     File.Move(dlFile, file);
