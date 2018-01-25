@@ -83,6 +83,7 @@
     <Compile Include="GameModeMenu\GameModeOption.cs" />
     <Compile Include="GameModeMenu\GameModeSelect.cs" />
     <Compile Include="GameModePlay\Beat.cs" />
+    <Compile Include="GameModePlay\BlueBeat.cs" />
     <Compile Include="GameModePlay\GameModePlay.cs" />
     <Compile Include="GameModePlay\Level.cs" />
     <Compile Include="Gamepader.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="Maintenance\FileIndex.cs" />
     <Compile Include="Maintenance\LocalFileIndex.cs" />
+    <Compile Include="Maintenance\InstallWarning.cs" />
     <Compile Include="Maintenance\MD5Sum.cs" />
     <Compile Include="Maintenance\Updater.cs" />
     <Compile Include="Maintenance\UpdaterGraphical.cs">

@@ -16,7 +16,8 @@ namespace Vega
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             bool shouldUpdate = false;
-            File.Delete(Maintenance.Updater.EXE_TMP_FILE);
+            if (Directory.Exists(Maintenance.Updater.TMP_DIR))
+                Directory.Delete(Maintenance.Updater.TMP_DIR, true);
             File.Delete(Maintenance.LocalFileIndex.SWAP_FILE_NAME);
             if (args.Length > 0)
             {
@@ -142,7 +143,7 @@ namespace Vega
             Logger.DefaultLogger.WriteLine("Restarting with flags = `{0}`", args);
             try
             {
-                System.Diagnostics.Process.Start(Application.ExecutablePath, args);
+                System.Diagnostics.Process.Start("Vega.exe", args);
                 return true;
             }
             catch (Exception e)

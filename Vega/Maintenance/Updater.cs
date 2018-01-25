@@ -9,7 +9,7 @@ namespace Vega.Maintenance
     public delegate void PercentChangedHandler(object sender, int value);
     public class Updater : IDisposable
     {
-        public const string EXE_TMP_FILE = ".tmp";
+        public const string TMP_DIR = ".tmp";
         public static Updater DefaultUpdater = new Updater();
         private readonly string TIMESTAMP = "?t=" + DateTime.Now.Ticks.ToString();
         private WebClient Client;
@@ -69,22 +69,25 @@ namespace Vega.Maintenance
                     this.Ready = true;
                     return true;
                 }
+#if INSTALL_WARNING
+                if (filesToGet.Count >= index.Count - 1)
+                {
+                    System.Windows.Forms.Application.Run(new InstallWarning());
+                }
+#endif
+                Directory.CreateDirectory(TMP_DIR);
                 foreach (var file in filesToGet)
                 {
                     string status = "Downloading " + file;
                     this.Log.WriteLine(status);
                     if (this.TextChanged != null)
                         this.TextChanged(this, status);
-                    if (file.Equals("Vega.exe"))
-                    {
-                        this.Client.DownloadFile(this.GetWebUrl("Vega.exe"), "Vega.exe.dl");
-                        File.Move("Vega.exe", EXE_TMP_FILE);
-                        File.Move("Vega.exe.dl", "Vega.exe");
-                    }
-                    else
-                    {
-                        this.Client.DownloadFile(this.GetWebUrl(file), file);
-                    }
+                    var dlFile = Path.Combine(TMP_DIR, file + ".dl");
+                    var trFile = Path.Combine(TMP_DIR, file + ".trash");
+                    this.Client.DownloadFile(this.GetWebUrl("Vega.exe"), dlFile);
+                    if (File.Exists(file))
+                        File.Move(file, trFile);
+                    File.Move(dlFile, file);
                 }
                 if (this.TextChanged != null)
                     this.TextChanged(this, "Update finished, restart to apply");
@@ -96,6 +99,7 @@ namespace Vega.Maintenance
                 Program.NoNetwork = true;
                 if (this.TextChanged != null)
                     this.TextChanged(this, "There is no internet connection");
+                File.Delete(LocalFileIndex.SWAP_FILE_NAME);
                 return false;
             }
             finally
