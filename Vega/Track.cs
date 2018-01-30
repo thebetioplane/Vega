@@ -13,6 +13,7 @@ namespace Vega
 
         public string SongFileName { get; set; }
         public List<TimingPoint> Timing;
+        private List<string> Levels;
         public string Directory { get; set; }
         public string SongFullPath => Path.Combine(this.Directory, this.SongFileName);
         private IniFile Meta;
@@ -48,10 +49,28 @@ namespace Vega
                 }
             }
             this.Timing.Sort();
+            this.Levels = new List<string>();
+            if (this.Meta["level1"] == null)
+            {
+                this.Timing.Add(new TimingPoint(60.0f, 0));
+            }
+            else
+            {
+                for (int i = 1; ; ++i)
+                {
+                    string value = this.Meta["level" + i.ToString()];
+                    if (value == null)
+                        break;
+                    this.Levels.Add(value);
+                }
+            }
+            
         }
         public GameModePlay.Level GetLevel(int n)
         {
-            return new GameModePlay.Level(this);
+            if (n < 0 || n >= this.Levels.Count)
+                throw new Exception(string.Format("Level {0} not found in {1}", n, this));
+            return new GameModePlay.Level(this, this.Levels[n]);
         }
         private static int SPStream;
         private static SongPlayerStatus SPStatus;
@@ -114,6 +133,11 @@ namespace Vega
         public double GetSeconds()
         {
             return Bass.ChannelBytes2Seconds(SPStream, Bass.ChannelGetPosition(SPStream));
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}", this.Artist, this.Title);
         }
     }
 }

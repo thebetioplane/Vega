@@ -11,8 +11,8 @@ namespace Vega.GameModeMenu
             get { return this._Selected; }
             set
             {
-                Assets.MenuClick.Play();
-                if (this._Selected >= 0)
+                // playsound here ?
+                if (this.Selected >= 0)
                     this.Buttons[this._Selected].Selected = false;
                 this._Selected = value;
                 if (this._Selected < 0)
@@ -42,7 +42,7 @@ namespace Vega.GameModeMenu
                 case ActionKey.MenuEnter:
                 case ActionKey.MenuEnterEx:
                 case ActionKey.A:
-                    Assets.MenuHit.Play();
+                    //Assets.MenuHit.Play();
                     this.MenuSelect();
                     break;
             }
