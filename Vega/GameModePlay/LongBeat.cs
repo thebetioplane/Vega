@@ -10,5 +10,11 @@ namespace Vega.GameModePlay
         {
 
         }
+
+        public override void FromBinary(BinaryReaderEx reader)
+        {
+            base.FromBinary(reader);
+            System.Diagnostics.Debug.Assert(this.Row < 2);
+        }
     }
 }

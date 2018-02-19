@@ -53,6 +53,7 @@ namespace Vega.GameModePlay
             this.StartTime = reader.ReadDouble();
             this.EndTime = reader.ReadDouble();
             this.Row = reader.ReadByte();
+            System.Diagnostics.Debug.Assert(this.StartTime > 0);
         }
         public abstract void Draw(double t);
     }

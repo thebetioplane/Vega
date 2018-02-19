@@ -50,21 +50,13 @@ namespace Vega
             }
             this.Timing.Sort();
             this.Levels = new List<string>();
-            if (this.Meta["level1"] == null)
+            for (int i = 1; ; ++i)
             {
-                this.Timing.Add(new TimingPoint(60.0f, 0));
+                string value = this.Meta["level" + i.ToString()];
+                if (value == null)
+                    break;
+                this.Levels.Add(Path.Combine(this.Directory, value));
             }
-            else
-            {
-                for (int i = 1; ; ++i)
-                {
-                    string value = this.Meta["level" + i.ToString()];
-                    if (value == null)
-                        break;
-                    this.Levels.Add(value);
-                }
-            }
-            
         }
         public GameModePlay.Level GetLevel(int n)
         {

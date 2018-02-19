@@ -10,14 +10,33 @@ namespace Vega.GameModePlay
         private List<Beat> Beats;
         public Level(Track parent, string fname)
         {
+#if DEBUGg
             this.Parent = parent;
             this.Beats = new List<Beat>();
+            double spb = this.Parent.Timing[0].SecondsPerBeat;
             for (int i = 0; i < 200; ++i)
             {
-                double start = i * this.Parent.Timing[0].SecondsPerBeat + this.Parent.Timing[0].Offset;
+                double start = i * spb / 2.0 + this.Parent.Timing[0].Offset;
                 this.Beats.Add(new ShortBeat(start, start, (byte)Main.Self.Rng.Next(4)));
             }
-#if sdkfjsdfkjdskf
+            for (int i = 0; i < 100; ++i)
+            {
+                double start = i * spb * 2.0 + this.Parent.Timing[0].Offset;
+                this.Beats.Add(new LongBeat(start, start + spb, (byte)Main.Self.Rng.Next(2)));
+            }
+            this.Beats.Sort();
+            using (var fs = new FileStream(fname, FileMode.Create, FileAccess.Write))
+            using (var writer = new BinaryWriterEx(fs))
+            {
+                writer.Write(this.Beats.Count);
+                foreach (var b in this.Beats)
+                {
+                    writer.Write((byte)b.T);
+                    b.ToBinary(writer);
+                }
+            }
+            throw new Exception("File made");
+#else
             this.Parent = parent;
             if (! File.Exists(fname))
                 throw new FileNotFoundException("Level not found", fname);
@@ -38,6 +57,11 @@ namespace Vega.GameModePlay
         private int HeadIndex = 0;
         private int TailIndex = 0;
         private const double ApproachRate = 0.5;
+        public void Reset()
+        {
+            this.HeadIndex = 0;
+            this.TailIndex = 0;
+        }
         public void Update()
         {
             double t = this.Parent.GetSeconds();

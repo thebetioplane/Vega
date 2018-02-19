@@ -17,6 +17,8 @@ namespace Vega.GameModePlay
         {
             base.FromBinary(reader);
             this.RowEnd = reader.ReadByte();
+            System.Diagnostics.Debug.Assert(this.Row < 4);
+            System.Diagnostics.Debug.Assert(this.RowEnd < 4);
         }
         public override void Draw(double t)
         {

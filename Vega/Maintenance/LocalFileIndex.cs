@@ -11,18 +11,22 @@ namespace Vega.Maintenance
         {
             if (useCache && File.Exists(FILE_NAME))
             {
-                this.FromFile(FILE_NAME);
-            }
-            else
-            {
-                foreach (var file in Program.RequiredFiles)
+                try
                 {
-                    if (! File.Exists(file))
-                        continue;
-                    using (var fs = new FileStream(file, FileMode.Open, FileAccess.Read))
-                    {
-                        this[file] = new MD5Sum(fs);
-                    }
+                    this.FromFile(FILE_NAME);
+                    return;
+                }
+                catch
+                {
+                }
+            }
+            foreach (var file in Program.RequiredFiles)
+            {
+                if (! File.Exists(file))
+                    continue;
+                using (var fs = new FileStream(file, FileMode.Open, FileAccess.Read))
+                {
+                    this[file] = new MD5Sum(fs);
                 }
             }
         }
