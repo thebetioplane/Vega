@@ -53,8 +53,19 @@ namespace Vega.GameModePlay
             this.StartTime = reader.ReadDouble();
             this.EndTime = reader.ReadDouble();
             this.Row = reader.ReadByte();
-            System.Diagnostics.Debug.Assert(this.StartTime > 0);
+            Assert(this.StartTime >= 0, "StartTime less than zero");
+            Assert(this.EndTime >= this.StartTime, "EndTime before StartTime");
+            // assertions for rows will be done by overriding
+            // in base classes
         }
-        public abstract void Draw(double t);
+        // For when given a start and end
+        public abstract void Draw(double t0, double t1);
+        // For when start and end are the same
+        public abstract void Draw(double t0);
+        protected static void Assert(bool test, string why)
+        {
+            if (! test)
+                throw new Exception("Beat: Assert failed: " + why);
+        }
     }
 }

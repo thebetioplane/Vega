@@ -14,16 +14,19 @@ namespace Vega.GameModePlay
             this.Parent = parent;
             this.Beats = new List<Beat>();
             double spb = this.Parent.Timing[0].SecondsPerBeat;
+            double off = this.Parent.Timing[0].Offset;
             for (int i = 0; i < 200; ++i)
             {
-                double start = i * spb / 2.0 + this.Parent.Timing[0].Offset;
-                this.Beats.Add(new ShortBeat(start, start, (byte)Main.Self.Rng.Next(4)));
+                double start = i * spb * 1.5 + off;
+                this.Beats.Add(new ShortBeat(start, start + spb, (byte)Main.Self.Rng.Next(4)));
             }
             for (int i = 0; i < 100; ++i)
             {
-                double start = i * spb * 2.0 + this.Parent.Timing[0].Offset;
-                this.Beats.Add(new LongBeat(start, start + spb, (byte)Main.Self.Rng.Next(2)));
+                double start = i * spb * 10 + off;
+                this.Beats.Add(new LongBeat(start, start + spb * 4, (byte)Main.Self.Rng.Next(2)));
             }
+            this.Beats.Add(new DriftBeat(off, off + 8 * spb, 0, 3));
+            this.Beats.Add(new DriftBeat(off + spb * 10, off + 18 * spb, 1, 0));
             this.Beats.Sort();
             using (var fs = new FileStream(fname, FileMode.Create, FileAccess.Write))
             using (var writer = new BinaryWriterEx(fs))
@@ -56,7 +59,7 @@ namespace Vega.GameModePlay
         }
         private int HeadIndex = 0;
         private int TailIndex = 0;
-        private const double ApproachRate = 0.5;
+        private const double ApproachRate = 1.0;
         public void Reset()
         {
             this.HeadIndex = 0;
@@ -67,7 +70,7 @@ namespace Vega.GameModePlay
             double t = this.Parent.GetSeconds();
             while (this.Beats[this.TailIndex].StartTime < t + ApproachRate)
                 ++this.TailIndex;
-            while (this.Beats[this.HeadIndex].StartTime < t)
+            while (this.Beats[this.HeadIndex].EndTime < t)
                 ++this.HeadIndex;
         }
         public void Draw()
@@ -76,7 +79,10 @@ namespace Vega.GameModePlay
             for (int i = this.HeadIndex; i != this.TailIndex; ++i)
             {
                 Beat b = this.Beats[i];
-                b.Draw(1.0 - (b.StartTime - t) / ApproachRate);
+                if (b.StartTime == b.EndTime)
+                    b.Draw(1.0 - (b.StartTime - t) / ApproachRate);
+                else
+                    b.Draw(1.0 - (b.StartTime - t) / ApproachRate, 1.0 - (b.EndTime - t) / ApproachRate);
             }
         }
     }

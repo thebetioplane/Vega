@@ -17,12 +17,16 @@ namespace Vega.GameModePlay
         {
             base.FromBinary(reader);
             this.RowEnd = reader.ReadByte();
-            System.Diagnostics.Debug.Assert(this.Row < 4);
-            System.Diagnostics.Debug.Assert(this.RowEnd < 4);
+            Assert(this.Row < 4, "DriftBeat: Start row too large");
+            Assert(this.RowEnd < 4, "DriftBeat: End row too large");
         }
-        public override void Draw(double t)
+        public override void Draw(double t0, double t1)
         {
 
+        }
+
+        public override void Draw(double t0)
+        {
         }
     }
 }

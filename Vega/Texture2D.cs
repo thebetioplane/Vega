@@ -51,6 +51,25 @@ namespace Vega
             GL.Vertex2(x, y + this.Height);
             GL.End();
         }
+        public void Draw(float x, float y, float w, float h, Vector2 origin, Color4 color)
+        {
+            x -= origin.X;
+            y -= origin.Y;
+            GL.Color4(color);
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+            GL.BindTexture(TextureTarget.Texture2D, this.textureId);
+            GL.Begin(PrimitiveType.Quads);
+            GL.TexCoord2(0.0f, 0.0f);
+            GL.Vertex2(x, y);
+            GL.TexCoord2(1.0f, 0.0f);
+            GL.Vertex2(x + w, y);
+            GL.TexCoord2(1.0f, 1.0f);
+            GL.Vertex2(x + w, y + h);
+            GL.TexCoord2(0.0f, 1.0f);
+            GL.Vertex2(x, y + h);
+            GL.End();
+        }
         public void Draw(float x, float y, Vector2 origin, Color4 color, float rotation, float scale)
         {
             x -= origin.X;
