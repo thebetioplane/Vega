@@ -31,7 +31,6 @@ namespace Vega.GameModePlay
             float y1 = (float)(20.0 + 800.0 * t1);
             float x0 = this.Row * 200.0f + 200.0f;
             float x1 = this.RowEnd * 200.0f + 200.0f;
-            Console.WriteLine("x: {0}, y: {1}", (x0 - x1) / 200.0f, (y0 - y1) / 200.0f);
             for (int i = 0; i < 200; ++i)
             {
                 float f = i / 200.0f;
